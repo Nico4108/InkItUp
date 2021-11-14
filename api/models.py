@@ -1,3 +1,6 @@
+from django.db import models
+
+# Create your models here.
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -6,6 +9,10 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+from datetime import date
 
 
 class Appointment(models.Model):
@@ -115,14 +122,19 @@ class TattooHasInk(models.Model):
         unique_together = (('tattoo_idtattoo', 'ink_batchnumber'),)
 
 
-class Tattooparlor(models.Model):
+class Tattooparlor(AbstractUser, models.Model):
     cvr = models.IntegerField(db_column='CVR', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=75, blank=True, null=True)  # Field name made lowercase.
     adress = models.CharField(db_column='Adress', max_length=45, blank=True, null=True)  # Field name made lowercase.
     phonenumber = models.IntegerField(db_column='PhoneNumber', blank=True, null=True)  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=45, blank=True, null=True)  # Field name made lowercase.
     supplier_cvr = models.ForeignKey(Supplier, on_delete=models.CASCADE, db_column='Supplier_CVR')  # Field name made lowercase.
-
+    USERNAME_FIELD = 'cvr'
+    REQUIRED_FIELDS = ['email']
+    
+    def __str__(self):
+      return "{}".format(self.email)
+    
     class Meta:
         db_table = 'tattooparlor'
         unique_together = (('cvr', 'supplier_cvr'),)
