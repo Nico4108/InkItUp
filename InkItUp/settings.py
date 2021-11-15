@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'api',
     'rest_auth',
+    'users',
 ]
 
-AUTH_USER_MODEL ='api.Tattooparlor'
+AUTH_USER_MODEL ='users.User'
 REST_FRAMEWORK = {
   'DEFAULT_PERMISSION_CLASSES': (
       'rest_framework.permissions.IsAuthenticated',

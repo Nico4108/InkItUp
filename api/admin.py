@@ -3,11 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from .models import Tattooparlor
-
 # Register your models here.
 
-admin.site.register(Tattooparlor, UserAdmin)
+# admin.site.register(User, UserAdmin)
 '''
 class UserAdmin(BaseUserAdmin):
 

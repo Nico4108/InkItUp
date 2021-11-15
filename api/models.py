@@ -65,7 +65,7 @@ class Ink(models.Model):
 
 
 class ParlorHasInk(models.Model):
-    ink_batchnumber = models.ForeignKey(Ink, on_delete=models.CASCADE, db_column='Ink_batchnumber', blank=True, null=True)  # Field name made lowercase.
+    ink_batchnumber = models.ForeignKey('Ink', on_delete=models.CASCADE, db_column='Ink_batchnumber', blank=True, null=True)  # Field name made lowercase.
     parlor_storageid = models.ForeignKey('Tattooparlor', on_delete=models.CASCADE, db_column='Parlor_storageID', blank=True, null=True)  # Field name made lowercase.
     quantity = models.IntegerField(db_column='Quantity', blank=True, null=True)  # Field name made lowercase.
 
@@ -106,7 +106,7 @@ class Tattoo(models.Model):
     idtattoo = models.AutoField(db_column='idTattoo', primary_key=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
     placementonbody = models.CharField(db_column='PlacementOnBody', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    appointment_idappointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column='Appointment_idAppointment')  # Field name made lowercase.
+    appointment_idappointment = models.ForeignKey('Appointment', on_delete=models.CASCADE, db_column='Appointment_idAppointment')  # Field name made lowercase.
 
     class Meta:
         db_table = 'tattoo'
@@ -115,26 +115,17 @@ class Tattoo(models.Model):
 
 class TattooHasInk(models.Model):
     tattoo_idtattoo = models.OneToOneField(Tattoo, on_delete=models.CASCADE, db_column='Tattoo_idTattoo', primary_key=True)  # Field name made lowercase.
-    ink_batchnumber = models.ForeignKey(Ink, on_delete=models.CASCADE, db_column='Ink_BatchNumber')  # Field name made lowercase.
+    ink_batchnumber = models.ForeignKey('Ink', on_delete=models.CASCADE, db_column='Ink_BatchNumber')  # Field name made lowercase.
 
     class Meta:
         db_table = 'tattoo_has_ink'
         unique_together = (('tattoo_idtattoo', 'ink_batchnumber'),)
 
 
-class Tattooparlor(AbstractUser, models.Model):
+class Tattooparlor(models.Model):
     cvr = models.IntegerField(db_column='CVR', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=75, blank=True, null=True)  # Field name made lowercase.
     adress = models.CharField(db_column='Adress', max_length=45, blank=True, null=True)  # Field name made lowercase.
     phonenumber = models.IntegerField(db_column='PhoneNumber', blank=True, null=True)  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    supplier_cvr = models.ForeignKey(Supplier, on_delete=models.CASCADE, db_column='Supplier_CVR')  # Field name made lowercase.
-    USERNAME_FIELD = 'cvr'
-    REQUIRED_FIELDS = ['email']
-    
-    def __str__(self):
-      return "{}".format(self.email)
-    
-    class Meta:
-        db_table = 'tattooparlor'
-        unique_together = (('cvr', 'supplier_cvr'),)
+    supplier_cvr = models.ForeignKey('Supplier', on_delete=models.CASCADE, db_column='Supplier_CVR')  # Field name made lowercase.
