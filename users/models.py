@@ -8,7 +8,7 @@ from api.models import Tattooparlor as Tattooparlor
 
 # Create your models here.
 class User(AbstractUser, models.Model):    
-    Tattooparlor_cvr = models.ForeignKey(Tattooparlor, on_delete=models.CASCADE, db_column='Tattooparlor_CVR')  # Field name made lowercase.
+    Tattooparlor_cvr = models.CharField(max_length=11, db_column='Tattooparlor_CVR')  # Field name made lowercase.
 
     REQUIRED_FIELDS = ['email', 'Tattooparlor_cvr']
     
