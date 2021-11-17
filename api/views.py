@@ -84,8 +84,8 @@ class appointmenttattooView(generics.ListAPIView):
 
 # STORED PROCEDURES FUNCTION BASED
 def show_appointments(request, TattooparlorCVR, date):
-    action = call_show_appointments(TattooparlorCVR, date)
-    return HttpResponse(action, content_type = 'application/json')
+    Storedp = call_show_appointments(TattooparlorCVR, date)
+    return HttpResponse(Storedp, content_type = 'application/json')
 
 
 def Update_ink_storage(request, batchnumber):
@@ -94,5 +94,5 @@ def Update_ink_storage(request, batchnumber):
 
 
 def Ink_Batchnumber_Callback(request, batchnumber):
-    action = call_Ink_Batchnumber_Callback(batchnumber)
-    return HttpResponse(action, content_type = 'application/json')
+    Storedp = call_Ink_Batchnumber_Callback(batchnumber)
+    return HttpResponse(Storedp, content_type = 'application/json')
