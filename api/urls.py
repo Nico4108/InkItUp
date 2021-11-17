@@ -12,7 +12,7 @@ urlpatterns = [
   path('<cpr>/updatecustomer/', CustomerViewUpdate.as_view()),
   path('<cpr>/deletecustomer/', CustomerViewDelete.as_view()),
 
-  path('appointment/', AppointmentViewCreate.as_view()),
+  path('appointments/', AppointmentViewCreate.as_view()),
   path('<cvr>/detailappointment/', AppointmentDetailView.as_view()),
   path('<cvr>/updateappointment/', AppointmentViewUpdate.as_view()),
   path('<cvr>/deleteappointment/', AppointmentViewDelete.as_view()),

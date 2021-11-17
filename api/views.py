@@ -6,9 +6,11 @@ from .serializers import CustomerSerializer, AppointmentSerializer, ArtistSerial
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models import Customer, Appointment, Artist, Tattoo, Ink, artiststats, tattooparlorstats, appointmenttattooview
+from users.models import User
 from django.db import connection
 from django.contrib import messages
 from rest_framework import generics
+from django.db.models.query import QuerySet
 
 # CUSTOMER
 class CustomerViewCreate(generics.ListCreateAPIView):
@@ -34,7 +36,14 @@ class CustomerViewDelete(generics.DestroyAPIView):
 class AppointmentViewCreate(generics.ListCreateAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-
+'''
+# ONLY LOGGED IN USERS APPOINTMENTS
+    def get_queryset(self):
+        queryset = self.queryset
+        if isinstance(queryset, QuerySet):
+            queryset = queryset.filter(tattooparlor_cvr=self.request.user.Tattooparlor_cvr)
+        return queryset
+'''
 class AppointmentDetailView(generics.RetrieveAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -50,7 +59,6 @@ class AppointmentViewDelete(generics.DestroyAPIView):
     serializer_class = AppointmentSerializer
     lookup_field = 'cvr'
 
-
 class ArtistCreateView(generics.ListCreateAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
@@ -60,6 +68,7 @@ class TattooView(generics.ListCreateAPIView):
     serializer_class = TattooSerializer
 
 # DATABASE VIEWS
+
 class artiststatsView(generics.ListAPIView):
     queryset = artiststats.objects.all()
     serializer_class = artiststatsSerializer
