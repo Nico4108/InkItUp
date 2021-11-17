@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Customer, Tattooparlor, TattooHasInk, Tattoo, Appointment, Supplier, Artist
+from .models import Customer, Tattooparlor, TattooHasInk, Tattoo, Appointment, Supplier, Artist, artiststats, tattooparlorstats, appointmenttattooview
  
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +35,23 @@ class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
         fields = "__all__"
+
+# DATABASE VIEWS
+class artiststatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = artiststats
+        fields = "__all__"
+
+
+class tattooparlorstatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = tattooparlorstats
+        fields = "__all__"
+
+
+class appointmenttattooviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = appointmenttattooview
+        fields = "__all__"
+        
+        

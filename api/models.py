@@ -133,3 +133,37 @@ class Tattooparlor(models.Model):
     class Meta:
         db_table = 'tattooparlor'
         unique_together = (('cvr', 'supplier_cvr'),)
+
+# DATABASE VIEWS
+class artiststats(models.Model):
+    Name = models.CharField(max_length=75, primary_key=True, unique=True)
+    CustommerCount = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'artiststats'
+
+
+class tattooparlorstats(models.Model):
+    Name = models.CharField(max_length=75, primary_key=True, unique=True)
+    NumSes = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tattooparlorstats'
+
+
+class appointmenttattooview(models.Model):
+    id = models.IntegerField(primary_key=True, unique=True)
+    datetime = models.DateTimeField(blank=True, null=True)  # Field name made lowercase.
+    SessionLenght = models.IntegerField(blank=True, null=True)
+    CustomerName = models.CharField(max_length=45, blank=True, null=True)
+    TattooparlorName = models.CharField(max_length=70, blank=True, null=True)
+    ArtistName = models.CharField(max_length=45, blank=True, null=True)
+    Description = models.CharField(max_length=200, blank=True, null=True)  # Field name made lowercase.
+    PlacementOnBody = models.CharField(max_length=45, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'appointmenttattooview'
+
