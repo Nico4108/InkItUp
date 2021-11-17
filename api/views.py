@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect, Http404
 from rest_framework.parsers import JSONParser
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import CustomerSerializer, AppointmentSerializer, ArtistSerializer, TattooSerializer, artiststatsSerializer, tattooparlorstatsSerializer, appointmenttattooviewSerializer
 from rest_framework.response import Response
@@ -8,9 +8,9 @@ from rest_framework.views import APIView
 from api.models import Customer, Appointment, Artist, Tattoo, Ink, artiststats, tattooparlorstats, appointmenttattooview
 from users.models import User
 from django.db import connection
-from django.contrib import messages
 from rest_framework import generics
-from django.db.models.query import QuerySet
+# from django.db.models.query import QuerySet
+from .calls import call_show_appointments, call_Update_ink_storage, call_Ink_Batchnumber_Callback
 
 # CUSTOMER
 class CustomerViewCreate(generics.ListCreateAPIView):
@@ -82,32 +82,17 @@ class appointmenttattooView(generics.ListAPIView):
     serializer_class = appointmenttattooviewSerializer
 
 
-@csrf_exempt
-def saveAppointment(request):
-        if request.method == 'POST':
-            if request.POST.get('idAppointment') and request.POST.get('DateTime') and request.POST.get('SessionLenght') and request.POST.get('Customer_CPR') and request.POST.get('Tattooparlor_CVR') and request.POST.get('Artist_CPR'):
-                save=Appointment()
-                save.idAppointment=request.POST.get('idAppointment')
-                save.DateTime=request.POST.get('DateTime')
-                save.SessionLenght=request.POST.get('SessionLenght')
-                save.Customer_CPR=request.POST.get('Customer_CPR')
-                save.Tattooparlor_CVR=request.POST.get('Tattooparlor_CVR')
-                save.Artist_CPR=request.POST.get('Artist_CPR')
-                cursor=connection.cursor()
-                cursor.execute("call CreateAppointment('"+save.idAppointment+"', '"+save.DateTime+"', '"+save.SessionLenght+"', '"+save.Customer_CPR+"', '"+save.Tattooparlor_CVR+"', '"+save.Artist_CPR+"')")
-                messages.success(request, "The Apointment "+save.idAppointment+"")
-                data = JSONParser().parse(request)
-                serializer =AppointmentSerializer(data = data)
-                return HttpResponse(serializer.data,status =400)
+# STORED PROCEDURES FUNCTION BASED
+def show_appointments(request, TattooparlorCVR, date):
+    action = call_show_appointments(TattooparlorCVR, date)
+    return HttpResponse(action, content_type = 'application/json')
 
 
-@csrf_exempt
-def saveInkbatch(request):
-        if request.method == 'POST':
-            if request.POST.get('batchnumber'):
-                save=Ink()
-                save.batchnumber=request.POST.get('batchnumber')
-                cursor=connection.cursor()
-                cursor.execute("call InkItUp.InkBatchNumberCallBackk('"+save.batchnumber+"')")
-                messages.success(request, "The batchnumber "+save.batchnumber+"")
-                return HttpResponse(request, content_type = 'application/json')
+def Update_ink_storage(request, batchnumber):
+    call_Update_ink_storage(batchnumber)
+    return HttpResponse(content_type = 'application/json')
+
+
+def Ink_Batchnumber_Callback(request, batchnumber):
+    action = call_Ink_Batchnumber_Callback(batchnumber)
+    return HttpResponse(action, content_type = 'application/json')

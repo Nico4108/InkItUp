@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
-from .views import CustomerViewCreate, CustomerDetailView, CustomerViewUpdate, CustomerViewDelete, AppointmentViewCreate, AppointmentDetailView, AppointmentViewUpdate, AppointmentViewDelete, saveAppointment, ArtistCreateView, TattooView, saveInkbatch, artiststatsView, tattooparlorstatsView, appointmenttattooView
+from .views import CustomerViewCreate, CustomerDetailView, CustomerViewUpdate, CustomerViewDelete, AppointmentViewCreate, AppointmentDetailView, AppointmentViewUpdate, AppointmentViewDelete, ArtistCreateView, TattooView, artiststatsView, tattooparlorstatsView, appointmenttattooView, Ink_Batchnumber_Callback
 from . import views
 
 urlpatterns = [
@@ -20,12 +20,13 @@ urlpatterns = [
   path('artiststatsview/', artiststatsView.as_view()),
   path('tattooparlorstatsview/', tattooparlorstatsView.as_view()),
   path('appointmenttattooview/', appointmenttattooView.as_view()),
-
-  path('createappointment/', views.saveAppointment),
   
   path("artist/",ArtistCreateView.as_view()),
 
   path("tatto/", TattooView.as_view()),
 
-  path('createsp/', views.saveInkbatch),
+# STORED PROCEDURES
+  path('showappointments/<str:TattooparlorCVR>/<str:date>/', views.show_appointments, name='show appointmentss'),
+  path('updateinkstorage/<str:batchnumber>/', views.Update_ink_storage, name='Update ink storage'),
+  path('batchnumbercallback/<str:batchnumber>/', views.Ink_Batchnumber_Callback, name='Ink Batchnumber Callback'),
 ]
