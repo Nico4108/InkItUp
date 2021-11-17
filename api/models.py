@@ -129,3 +129,7 @@ class Tattooparlor(models.Model):
     phonenumber = models.IntegerField(db_column='PhoneNumber', blank=True, null=True)  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=45, blank=True, null=True)  # Field name made lowercase.
     supplier_cvr = models.ForeignKey('Supplier', on_delete=models.CASCADE, db_column='Supplier_CVR')  # Field name made lowercase.
+        
+    class Meta:
+        db_table = 'tattooparlor'
+        unique_together = (('cvr', 'supplier_cvr'),)

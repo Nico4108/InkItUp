@@ -15,42 +15,12 @@ class CustomerView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
-    '''
-    def get(self, request):
-        if request.method == "GET":
-            Customers = Customer.objects.all()
-            serializer = CustomerSerializer(Customers, many =True)
-            return JsonResponse(serializer.data, safe =False)
-
-        elif request.method == 'POST':
-            data = JSONParser().parse(request)
-            serializer =CustomerSerializer(data = data)
- 
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data,status =201)
-        return JsonResponse(serializer.errors,status = 400)
-'''
 
 class AppointmentView(generics.ListCreateAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-'''
-    def get(self, request):
-        if request.method == "GET":
-            Appointments = Appointment.objects.all()
-            serializer = AppointmentSerializer(Appointments, many =True)
-            return JsonResponse(serializer.data, safe =False)
 
-        elif request.method == 'POST':
-            data = JSONParser().parse(request)
-            serializer =CustomerSerializer(data = data)
- 
-        if serializer.is_valid():
-            serializer.save()
-            return HttpResponse(serializer.data,status =201)
-        return HttpResponse(serializer.errors,status = 400)
-'''
+
 @csrf_exempt
 def saveAppointment(request):
         if request.method == 'POST':
