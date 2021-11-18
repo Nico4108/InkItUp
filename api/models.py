@@ -1,3 +1,6 @@
+from django.db import models
+
+# Create your models here.
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -6,6 +9,10 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+from datetime import date
 
 
 class Appointment(models.Model):
@@ -58,7 +65,7 @@ class Ink(models.Model):
 
 
 class ParlorHasInk(models.Model):
-    ink_batchnumber = models.ForeignKey(Ink, on_delete=models.CASCADE, db_column='Ink_batchnumber', blank=True, null=True)  # Field name made lowercase.
+    ink_batchnumber = models.ForeignKey('Ink', on_delete=models.CASCADE, db_column='Ink_batchnumber', blank=True, null=True)  # Field name made lowercase.
     parlor_storageid = models.ForeignKey('Tattooparlor', on_delete=models.CASCADE, db_column='Parlor_storageID', blank=True, null=True)  # Field name made lowercase.
     quantity = models.IntegerField(db_column='Quantity', blank=True, null=True)  # Field name made lowercase.
 
@@ -99,7 +106,7 @@ class Tattoo(models.Model):
     idtattoo = models.AutoField(db_column='idTattoo', primary_key=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
     placementonbody = models.CharField(db_column='PlacementOnBody', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    appointment_idappointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column='Appointment_idAppointment')  # Field name made lowercase.
+    appointment_idappointment = models.ForeignKey('Appointment', on_delete=models.CASCADE, db_column='Appointment_idAppointment')  # Field name made lowercase.
 
     class Meta:
         db_table = 'tattoo'
@@ -108,7 +115,7 @@ class Tattoo(models.Model):
 
 class TattooHasInk(models.Model):
     tattoo_idtattoo = models.OneToOneField(Tattoo, on_delete=models.CASCADE, db_column='Tattoo_idTattoo', primary_key=True)  # Field name made lowercase.
-    ink_batchnumber = models.ForeignKey(Ink, on_delete=models.CASCADE, db_column='Ink_BatchNumber')  # Field name made lowercase.
+    ink_batchnumber = models.ForeignKey('Ink', on_delete=models.CASCADE, db_column='Ink_BatchNumber')  # Field name made lowercase.
 
     class Meta:
         db_table = 'tattoo_has_ink'
@@ -121,8 +128,42 @@ class Tattooparlor(models.Model):
     adress = models.CharField(db_column='Adress', max_length=45, blank=True, null=True)  # Field name made lowercase.
     phonenumber = models.IntegerField(db_column='PhoneNumber', blank=True, null=True)  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    supplier_cvr = models.ForeignKey(Supplier, on_delete=models.CASCADE, db_column='Supplier_CVR')  # Field name made lowercase.
-
+    supplier_cvr = models.ForeignKey('Supplier', on_delete=models.CASCADE, db_column='Supplier_CVR')  # Field name made lowercase.
+        
     class Meta:
         db_table = 'tattooparlor'
         unique_together = (('cvr', 'supplier_cvr'),)
+
+# DATABASE VIEWS
+class artiststats(models.Model):
+    Name = models.CharField(max_length=75, primary_key=True, unique=True)
+    CustommerCount = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'artiststats'
+
+
+class tattooparlorstats(models.Model):
+    Name = models.CharField(max_length=75, primary_key=True, unique=True)
+    NumSes = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tattooparlorstats'
+
+
+class appointmenttattooview(models.Model):
+    id = models.IntegerField(primary_key=True, unique=True)
+    datetime = models.DateTimeField(blank=True, null=True)  # Field name made lowercase.
+    SessionLenght = models.IntegerField(blank=True, null=True)
+    CustomerName = models.CharField(max_length=45, blank=True, null=True)
+    TattooparlorName = models.CharField(max_length=70, blank=True, null=True)
+    ArtistName = models.CharField(max_length=45, blank=True, null=True)
+    Description = models.CharField(max_length=200, blank=True, null=True)  # Field name made lowercase.
+    PlacementOnBody = models.CharField(max_length=45, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'appointmenttattooview'
+

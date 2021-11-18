@@ -27,19 +27,36 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CSRF_COOKIE_SECURE = False
 
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'InkItUp',
+    'rest_framework.authtoken',
+    'api',
+    'rest_auth',
+    'users',
 ]
 
+AUTH_USER_MODEL ='users.User'
+REST_FRAMEWORK = {
+  'DEFAULT_PERMISSION_CLASSES': (
+      'rest_framework.permissions.IsAuthenticated',
+  ),
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+      'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+      # 'rest_framework.authentication.SessionAuthentication',
+      'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+  ),
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -81,7 +98,7 @@ DATABASES = {
         'USER': 'root',
         'HOST': 'localhost',
         'PORT': '3306',
-        'PASSWORD': 'Morfar1559',
+        'PASSWORD': '1234!',
     }
 }
 
