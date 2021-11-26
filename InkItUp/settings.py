@@ -99,6 +99,14 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
         'PASSWORD': '1234!',
+    },
+    'mongo': {
+        'ENGINE': 'djongo',
+        'NAME': 'InkItUp-MongoDB',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': 'mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+        }  
     }
 }
 
