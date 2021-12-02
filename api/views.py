@@ -10,7 +10,9 @@ from users.models import User
 from django.db import connection
 from rest_framework import generics
 # from django.db.models.query import QuerySet
-from .calls import call_show_appointments, call_Update_ink_storage, call_Ink_Batchnumber_Callback
+from .calls import call_show_appointments, call_Update_ink_storage, call_Ink_Batchnumber_Callback, call_Register_Tattoo_with_Ink
+
+# pylint: disable=E1101
 
 # CUSTOMER
 class CustomerViewCreate(generics.ListCreateAPIView):
@@ -36,14 +38,14 @@ class CustomerViewDelete(generics.DestroyAPIView):
 class AppointmentViewCreate(generics.ListCreateAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-'''
+
 # ONLY LOGGED IN USERS APPOINTMENTS
     def get_queryset(self):
         queryset = self.queryset
         if isinstance(queryset, QuerySet):
             queryset = queryset.filter(tattooparlor_cvr=self.request.user.Tattooparlor_cvr)
         return queryset
-'''
+
 class AppointmentDetailView(generics.RetrieveAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -83,8 +85,8 @@ class appointmenttattooView(generics.ListAPIView):
 
 
 # STORED PROCEDURES FUNCTION BASED
-def show_appointments(request, TattooparlorCVR, date):
-    Storedp = call_show_appointments(TattooparlorCVR, date)
+def show_appointments(request, date):
+    Storedp = call_show_appointments(date)
     return HttpResponse(Storedp, content_type = 'application/json')
 
 
@@ -96,3 +98,8 @@ def Update_ink_storage(request, batchnumber):
 def Ink_Batchnumber_Callback(request, batchnumber):
     Storedp = call_Ink_Batchnumber_Callback(batchnumber)
     return HttpResponse(Storedp, content_type = 'application/json')
+
+
+def Register_Tattoo_with_Ink(request, NewidTattoo, NewDescription, NewPlacementOnBody, NewAppointment_idAppointment, Inkbatchnumber):
+    call_Register_Tattoo_with_Ink(NewidTattoo, NewDescription, NewPlacementOnBody, NewAppointment_idAppointment, Inkbatchnumber)
+    return HttpResponse(content_type = 'application/json')

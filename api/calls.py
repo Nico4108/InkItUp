@@ -2,14 +2,15 @@ from django.db import connection
 import json
 from api.models import Customer, Appointment, Artist, Tattoo, Ink, artiststats, tattooparlorstats, appointmenttattooview
 from django.views.decorators.csrf import csrf_exempt
+from users.models import User
 
 @csrf_exempt
-def call_show_appointments(tattooparlorCVR, date):
+def call_show_appointments(date):
     cursor = connection.cursor()
     try:
         id = 0
         appointments = dict()
-        cursor.execute("CALL InkItUp.Show_tattooparlor_Appointments('{}','{}');".format(tattooparlorCVR, date))
+        cursor.execute("CALL InkItUp.Show_tattooparlor_Appointments('{}','{}');".format(User.Tattooparlor_cvr, date))
         for record in cursor.fetchall():
             id += 1
             appointments[id] = {"tattooparlor_name": record[0], "booking_date_time": record[1], "SessionLenght": record[2], "Artist": record[3], "Hourly_rate": record[4], "Customer_Name": record[5], "PhoneNumber": record[6], "Totalprice": record[7]}
@@ -37,17 +38,10 @@ def call_Ink_Batchnumber_Callback(batchnumber):
     finally:
         cursor.close()
 
-'''
-def call_Register_Tattoo_with_Ink(batchnumber):
+
+def call_Register_Tattoo_with_Ink(NewidTattoo, NewDescription, NewPlacementOnBody, NewAppointment_idAppointment, Inkbatchnumber):
     cursor = connection.cursor()
     try:
-        id = 0
-        tattoo = dict()
-        cursor.execute("CALL InkItUp.InkBatchNumberCallBackk('{}');".format(batchnumber))
-        for record in cursor.fetchall():
-            id += 1
-            tattoos[id] = {"Customer_CPR": record[0], "Name": record[1], "PhoneNumber": record[2], "DateTime": record[3], "IdTattoo": record[4], "Ink_BatchNumber": record[5]}
-        return json.dumps(tattoos, indent=4, sort_keys=False, default=str)
+        cursor.execute("CALL InkItUp.RegisterTattooWithInk('{}','{}','{}','{}','{}');".format(NewidTattoo, NewDescription, NewPlacementOnBody, NewAppointment_idAppointment, Inkbatchnumber))
     finally:
         cursor.close()
-'''
