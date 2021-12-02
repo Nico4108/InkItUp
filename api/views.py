@@ -10,7 +10,7 @@ from users.models import User
 from django.db import connection
 from rest_framework import generics
 # from django.db.models.query import QuerySet
-from .calls import call_show_appointments, call_Update_ink_storage, call_Ink_Batchnumber_Callback, call_Register_Tattoo_with_Ink
+from .calls import call_show_appointments, call_Update_ink_storage, call_Ink_Batchnumber_Callback, call_Register_Tattoo_with_Ink, mongo_get_customer
 
 # pylint: disable=E1101
 
@@ -103,3 +103,10 @@ def Ink_Batchnumber_Callback(request, batchnumber):
 def Register_Tattoo_with_Ink(request, NewidTattoo, NewDescription, NewPlacementOnBody, NewAppointment_idAppointment, Inkbatchnumber):
     call_Register_Tattoo_with_Ink(NewidTattoo, NewDescription, NewPlacementOnBody, NewAppointment_idAppointment, Inkbatchnumber)
     return HttpResponse(content_type = 'application/json')
+
+#MONGODB -----------------
+
+
+def show_customer(request, CPR):
+    action = mongo_get_customer(CPR)
+    return HttpResponse(action, content_type = "application/json")

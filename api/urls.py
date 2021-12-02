@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
-from .views import CustomerViewCreate, CustomerDetailView, CustomerViewUpdate, CustomerViewDelete, AppointmentViewCreate, AppointmentDetailView, AppointmentViewUpdate, AppointmentViewDelete, ArtistCreateView, TattooView, artiststatsView, tattooparlorstatsView, appointmenttattooView, Ink_Batchnumber_Callback, Register_Tattoo_with_Ink
+from .views import CustomerViewCreate, CustomerDetailView, CustomerViewUpdate, CustomerViewDelete, AppointmentViewCreate, AppointmentDetailView, AppointmentViewUpdate, AppointmentViewDelete, ArtistCreateView, TattooView, artiststatsView, tattooparlorstatsView, appointmenttattooView, Ink_Batchnumber_Callback, Register_Tattoo_with_Ink, show_customer
 from . import views
 
 urlpatterns = [
@@ -30,5 +30,9 @@ urlpatterns = [
   path('updateinkstorage/<str:batchnumber>/', views.Update_ink_storage, name='Update ink storage'),
   path('batchnumbercallback/<str:batchnumber>/', views.Ink_Batchnumber_Callback, name='Ink Batchnumber Callback'),
   path('registertattoo/<int:NewidTattoo>/<str:NewDescription>/<str:NewPlacementOnBody>/<str:NewAppointment_idAppointment>/<str:Inkbatchnumber>/', views.Register_Tattoo_with_Ink, name='Register Tattoo with Ink'),
+
+#MONGODB
+path('mongo/showcustomer/<CPR>/',views.show_customer, name='show customer'),
+
 
 ]

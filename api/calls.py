@@ -45,3 +45,47 @@ def call_Register_Tattoo_with_Ink(NewidTattoo, NewDescription, NewPlacementOnBod
         cursor.execute("CALL InkItUp.RegisterTattooWithInk('{}','{}','{}','{}','{}');".format(NewidTattoo, NewDescription, NewPlacementOnBody, NewAppointment_idAppointment, Inkbatchnumber))
     finally:
         cursor.close()
+
+
+# MONGODB -------------------------------
+
+from pymongo import MongoClient
+# connect to the mongoclient
+client = MongoClient('mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+
+# get the database
+db = client['InkItUp']
+customer_collection = db["customer"]
+# tr = db["transactions"]
+
+def mongo_get_customer(CPR):
+    if customer_collection.count({"_id":CPR}):
+        for x in customer_collection.aggregate([
+            {"$match":{"_id": CPR}},
+            { "$project": {
+                "_id": 1,
+                "Name" : 1,
+                "Email" : 1,
+                "PhoneNumber" : 1,
+                "registered": 1,
+                "hehe": 1,}}]):
+            return json.dumps(x, indent=2) 
+    else:
+        return "customer does not exist. Please enter a valid CPR"
+
+
+
+def mongo_send(client_id,account_number, _amount):
+    cur_date = date.today().strftime("%Y-%m-%d")
+    if cl.count({"_id":client_id}):
+        if cl.count({"accounts.number": account_number}):
+            amount = float(_amount)
+        # print(cl.aggregate([{"$project": {"accounts": {"balance" : 1}}}]))
+            cl.update({ "_id": client_id, "accounts.number": account_number}, {"$inc": { "accounts.$.balance": -amount}, "$set": {"accounts.$.lastUpdate": cur_date}})
+            tr.insert({"_id":tr.count(), "account_number": account_number, "amount": amount, "status": "send", "date": cur_date, "client_id": client_id})
+            
+            return "Transaction Successful"
+        else:
+            return "Account doesnt exist. Please enter a valid account number."
+    else :
+        return "Client does not exist. Please enter a valid client ID"
