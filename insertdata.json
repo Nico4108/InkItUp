@@ -1,0 +1,196 @@
+ink1 = {
+    "_id": 12620,
+    "brand": "Gislason Inc",
+    "colorcode": "mgsn",
+    "experationDate": "2004-01-23 18:05:05",
+    "price": "122",
+    "producer":
+    {
+        "_id": 76643026,
+        "name": "Kuhlman-Gusikowski",
+        "phonenumber": "34545548",
+        "address": "2997 Heloise Islands Apt. 602 Reillytown, AK "
+    }
+
+}
+ink2 = {
+
+    "_id": 13468,
+    "brand": "Legros PLC",
+    "colorcode": "geob",
+    "experationDate": "2001-09-22 21:02:12",
+    "price": "127",
+    "producer":
+    {
+        "_id": 31796880,
+        "name": "Ritchie Inc",
+        "phonenumber": "34545555",
+        "address": "87790 Roslyn Cove Suite 141 New Felipe, GA 95"
+    }
+
+}
+
+parlor1 = {
+    "_id": 9392991,
+    "name": "Hamill, Willms and Stracke",
+    "address": "5621 Murphy Harbor Apt. 907 North Clevelandto",
+    "phonenumber": "116361",
+    "email": "gertrude.d'amore@johns.net",
+    "supplier":
+    {
+        "_id": 98026012,
+        "name": "Friesen-Feeney",
+        "phonenumber": "11923245",
+        "address": "0582 Tristin Ranch Wavafurt, KS 25742"
+    },
+    "artists": 
+        [
+            {
+                "_id": 1176704,
+                "name": "Alex Frami",
+                "phonenumber": "25044444",
+                "email": "dkuphal@yahoo.com",
+                "price": "1779",
+            },
+            {
+                "_id": 1233414,
+                "name": "Mr. Houston Lemke",
+                "phonenumber": "1234321",
+                "email": "louvenia84@prohaska.biz",
+                "price": "2730",
+            },
+            {
+                "_id": 2325620,
+                "name": "Mrs. Carolyne McClure MD",
+                "phonenumber": "1234555",
+                "email": "terry.gulgowski@walshpurdy.com",
+                "price": "4530",
+            }
+        ],
+    "storage":
+        [
+        {
+            "_id": 13468,
+            "quantity": 20
+        },
+        {
+            "_id": 12620,
+            "quantity": 12
+        }
+    ],
+    "user": {
+        "_id": 22,
+        "password": 1234,
+        "last_login": "2021-11-17 17:16:31.820053",
+        "is_superuser": 1,
+        "username": "HWS",
+        "firstname": "Hamill",
+        "lastname": "smith",
+        "email": "gertrude.d'amore@johns.net",
+        "is_staff": "1",
+        "is_active": "1",
+        "date_joined": "2021-11-15 18:02:18.000000"
+    }
+
+}
+parlor2 = {
+    "_id": 31111119,
+    "name": "Lubowitz-Wunsch",
+    "address": "768 Cyril Key West Amani, MA 72221",
+    "phonenumber": "11636331",
+    "email": "dawson.wiegand@miller.com",
+    "supplier":
+    {
+        "_id": 10718346,
+        "name": "Swaniawski-Abshire",
+        "phonenumber": "92543521",
+        "address": "277 Amalia Shoal West Keon, VA 43578"
+    },
+    "artists": 
+        [
+            {
+                "_id": 40056852,
+                "name": "Helene Ratke",
+                "phonenumber": "25044444",
+                "email": "mavis.wintheiser@schultzschmeler.com",
+                "price": "3255",
+            },
+            {
+                "_id": 40443201,
+                "name": "Akeem Rodriguez",
+                "phonenumber": "297048",
+                "email": "beahan.terrell@yahoo.com",
+                "price": "5266",
+            },
+            {
+                "_id": 40895055,
+                "name": "Caroline Crona",
+                "phonenumber": "1234555",
+                "email": "rene.bauch@hotmail.com",
+                "price": "1140",
+            }
+        ],
+    "storage":
+        [
+        {
+            "_id": 13468,
+            "quantity": 10
+        },
+        {
+            "_id": 12620,
+            "quantity": 21
+        }
+    ],
+    "user": {
+        "_id": 33,
+        "password": 1234,
+        "last_login": "2021-11-26 13:16:02.272999",
+        "is_superuser": 1,
+        "username": "Swaniawski",
+        "firstname": "Swania",
+        "lastname": "ski",
+        "email": "dawson.wiegand@miller.com",
+        "is_staff": "1",
+        "is_active": "1",
+        "date_joined": "2021-11-15 18:02:18.000000"
+    }
+
+}
+Customer1 = {
+    "_id": 31,
+    "name": "Mr. Keenan Stracke",
+    "phonenumber": "23785111",
+    "email": "schuster.elta@lowe.info",
+    "registered": "2017-11-10",
+    "appointments": 
+        [
+            {
+                "_id": 43214,
+                "datetime": "2022-10-13 05:00:00",
+                "sessionlenght": "7",
+                "tattooparlor": {
+                    "_id": 31111119
+                },
+                "artist": {
+                     "_id": 40056852
+                },
+                "price": "5000",
+                "tattoos": [
+                    {
+                        "_id": 13,
+                        "description": "test test test. Voluptatem doloribus sequi voluptatem sit ipsa nostrum. Dolor earum ut maiores autem cumque. Sit fugit ut soluta commodi rerum nihil.",
+                        "placementonbody": "ryggen",
+                        "inks":
+                        [
+                            {
+                                "_id": 13468
+                            },
+                            {
+                                "_id": 12620
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]      
+}

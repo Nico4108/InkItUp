@@ -55,26 +55,32 @@ client = MongoClient('mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.ne
 
 # get the database
 db = client['InkItUp']
-customer_collection = db["customer"]
+customer_collection = db["Customer"]
 # tr = db["transactions"]
-
-def mongo_get_customer(CPR):
-    if customer_collection.count({"_id":CPR}):
+'''
+def mongo_get_customer(date):
+    if customer_collection.count({"appointments.datetime":date}):
         for x in customer_collection.aggregate([
-            {"$match":{"_id": CPR}},
-            { "$project": {
-                "_id": 1,
-                "Name" : 1,
-                "Email" : 1,
-                "PhoneNumber" : 1,
-                "registered": 1,
-                "hehe": 1,}}]):
+            {"$match":{"appointments.datetime": date}},
+            {"$project": {
+                    "firstname" : 1,
+                    "lastname": 1,
+                }}]):
             return json.dumps(x, indent=2) 
     else:
-        return "customer does not exist. Please enter a valid CPR"
+        return "no app does not exist. Please enter a valid CPR"
+'''
 
+def mongo_get_customer(date):
+    data = []
+    if customer_collection.count({"appointments.datetime":date}):
+        for x in customer_collection.find({"appointments.datetime":date}):
+            data.append(x)
+        return json.dumps(data, indent=2) 
+    else:
+        return "no app does not exist. Please enter a valid CPR"
 
-
+'''
 def mongo_send(client_id,account_number, _amount):
     cur_date = date.today().strftime("%Y-%m-%d")
     if cl.count({"_id":client_id}):
@@ -89,3 +95,4 @@ def mongo_send(client_id,account_number, _amount):
             return "Account doesnt exist. Please enter a valid account number."
     else :
         return "Client does not exist. Please enter a valid client ID"
+'''

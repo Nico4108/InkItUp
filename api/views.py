@@ -107,6 +107,6 @@ def Register_Tattoo_with_Ink(request, NewidTattoo, NewDescription, NewPlacementO
 #MONGODB -----------------
 
 
-def show_customer(request, CPR):
-    action = mongo_get_customer(CPR)
+def show_customer(request, date):
+    action = mongo_get_customer(date)
     return HttpResponse(action, content_type = "application/json")
