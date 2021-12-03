@@ -1,8 +1,9 @@
 import pymongo
+import certifi
 #connect_string = 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority' 
 
 from django.conf import settings
-my_client = pymongo.MongoClient('mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+my_client = pymongo.MongoClient('mongodb+srv://root:1234!@inkitup-mongodb.elev4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', tlsCAFile=certifi.where())
 
 
 # First define the database name
@@ -59,7 +60,7 @@ print(count)
 cus_details = collection_name.find({"appointments.datetime": "2022-10-13 05:00:00"})
 # Print on the terminal
 for r in cus_details:
-    print(r["appointments.datetime"])
+    print(r["_id"])
 # Update one document
 # update_data = collection_name.update_one({'medicine_id':'RR000123456'}, {'$set':{'common_name':'Paracetamol 500'}})
 

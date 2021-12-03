@@ -50,8 +50,9 @@ def call_Register_Tattoo_with_Ink(NewidTattoo, NewDescription, NewPlacementOnBod
 # MONGODB -------------------------------
 
 from pymongo import MongoClient
+import certifi
 # connect to the mongoclient
-client = MongoClient('mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', tlsCAFile=certifi.where())
 
 # get the database
 db = client['InkItUp']
