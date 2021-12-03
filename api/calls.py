@@ -57,7 +57,7 @@ client = MongoClient('mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.ne
 # get the database
 db = client['InkItUp']
 customer_collection = db["Customer"]
-# tr = db["transactions"]
+tattooparlor_collection = db["Tattooparlor"]
 '''
 def mongo_get_customer(date):
     if customer_collection.count({"appointments.datetime":date}):
@@ -81,6 +81,30 @@ def mongo_get_customer(date):
     else:
         return "no app does not exist. Please enter a valid CPR"
 
+def mongo_create_appointment(c_id, a_id, datetime, sessionlength, tattooparlorid, artistid):
+    price = 0
+    cus_details = tattooparlor_collection.find({"artists._id": artistid})
+    
+    for r in cus_details:
+        for x in r["artists"]:
+            if x["_id"] == artistid:
+                price = ((int(x["price"])) * sessionlength)
+
+    customer_collection.update({"_id": c_id}, {"$addToSet": {"appointments": {
+        "_id": a_id,
+        "datetime": datetime,
+        "sessionLenght": sessionlength,
+        "tattoparlor": {
+            "_id": tattooparlorid
+        },
+        "artist": {
+            "_id": artistid
+        },
+        "price": price,
+        "tattoos": {}
+    }}})
+    print(f"New appointment created for Customer:{c_id}")
+    return f"New appointment created for Customer:{c_id}"
 '''
 def mongo_send(client_id,account_number, _amount):
     cur_date = date.today().strftime("%Y-%m-%d")
