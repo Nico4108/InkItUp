@@ -58,19 +58,7 @@ client = MongoClient('mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.ne
 db = client['InkItUp']
 customer_collection = db["Customer"]
 tattooparlor_collection = db["Tattooparlor"]
-'''
-def mongo_get_customer(date):
-    if customer_collection.count({"appointments.datetime":date}):
-        for x in customer_collection.aggregate([
-            {"$match":{"appointments.datetime": date}},
-            {"$project": {
-                    "firstname" : 1,
-                    "lastname": 1,
-                }}]):
-            return json.dumps(x, indent=2) 
-    else:
-        return "no app does not exist. Please enter a valid CPR"
-'''
+auditing_collection = db["Auditing"]
 
 def mongo_get_customer(date):
     data = []
@@ -105,19 +93,28 @@ def mongo_create_appointment(c_id, a_id, datetime, sessionlength, tattooparlorid
     }}})
     print(f"New appointment created for Customer:{c_id}")
     return f"New appointment created for Customer:{c_id}"
-'''
-def mongo_send(client_id,account_number, _amount):
-    cur_date = date.today().strftime("%Y-%m-%d")
-    if cl.count({"_id":client_id}):
-        if cl.count({"accounts.number": account_number}):
-            amount = float(_amount)
-        # print(cl.aggregate([{"$project": {"accounts": {"balance" : 1}}}]))
-            cl.update({ "_id": client_id, "accounts.number": account_number}, {"$inc": { "accounts.$.balance": -amount}, "$set": {"accounts.$.lastUpdate": cur_date}})
-            tr.insert({"_id":tr.count(), "account_number": account_number, "amount": amount, "status": "send", "date": cur_date, "client_id": client_id})
-            
-            return "Transaction Successful"
-        else:
-            return "Account doesnt exist. Please enter a valid account number."
-    else :
-        return "Client does not exist. Please enter a valid client ID"
-'''
+
+def mongo_create_tattoo(a_id, t_id, desc, placement, ink_id): 
+    customer_collection.update_one({"appointments._id": a_id}, {"$addToSet": {"appointments.$.tattoos": {
+        "_id": t_id,
+        "description": desc,
+        "placementonbody": placement,
+        "inks": {
+            "_id": ink_id
+        }
+    }}}, upsert=True)
+    return f"New tattoo created"
+
+def mongodb_update_storage(tp_id, ink_id):
+    tattooparlor_collection.update_one({"_id": tp_id, "storage": {"$elemMatch": {"_id": ink_id}}}, {"$inc": {"storage.$.quantity": -1}}, upsert=True)
+    return "Storage updated!"
+
+def monogodb_find_customer_on_ink(ink_id):
+    data = []
+    for cust_tattoo in customer_collection.aggregate([
+        {"$match": {"appointments.tattoos.inks._id": ink_id}},
+            {"$project": {
+                "name": 1,
+                "phonenumber": 1}}]):
+                data.append(cust_tattoo)
+    return json.dumps(data, indent=2)

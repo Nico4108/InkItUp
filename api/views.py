@@ -10,7 +10,7 @@ from users.models import User
 from django.db import connection
 from rest_framework import generics
 # from django.db.models.query import QuerySet
-from .calls import call_show_appointments, call_Update_ink_storage, call_Ink_Batchnumber_Callback, call_Register_Tattoo_with_Ink, mongo_get_customer, mongo_create_appointment
+from .calls import call_show_appointments, call_Update_ink_storage, call_Ink_Batchnumber_Callback, call_Register_Tattoo_with_Ink, mongo_get_customer, mongo_create_appointment, mongo_create_tattoo, mongodb_update_storage, monogodb_find_customer_on_ink
 
 # pylint: disable=E1101
 
@@ -113,3 +113,15 @@ def show_customer(request, date):
 def create_appointment_existing_customer(request, new_c_id, new_a_id, new_datetime, new_sessionlength, new_tattooparlorid, new_artistid):
     new_appointment = mongo_create_appointment(new_c_id, new_a_id, new_datetime, new_sessionlength, new_tattooparlorid, new_artistid)
     return HttpResponse(new_appointment, content_type = "application/json")
+
+def create_tattoo(request, new_a_id, new_t_id, new_desc, new_placement, new_ink_id):
+    new_tattoo = mongo_create_tattoo(new_a_id, new_t_id, new_desc, new_placement, new_ink_id)
+    return HttpResponse(new_tattoo, content_type= "application/json")
+
+def update_ink(request, new_tp_id, new_ink_id):
+    new_update_ink = mongodb_update_storage(new_tp_id, new_ink_id)
+    return HttpResponse(new_update_ink, content_type= "application/json")
+
+def find_customer_ink(request, new_ink_id):
+    new_find_customer = monogodb_find_customer_on_ink(new_ink_id)
+    return HttpResponse(new_find_customer, content_type = "application/json")
