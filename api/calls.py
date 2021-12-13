@@ -58,9 +58,8 @@ client = MongoClient('mongodb+srv://nadia:1234!@inkitup-mongodb.elev4.mongodb.ne
 db = client['InkItUp']
 customer_collection = db["Customer"]
 tattooparlor_collection = db["Tattooparlor"]
-auditing_collection = db["Auditing"]
 
-def mongo_get_customer(date):
+def mongo_get_customer(date, tp_id):
     data = []
     if customer_collection.count({"appointments.datetime":date}):
         for x in customer_collection.find({"appointments.datetime":date}):
@@ -68,6 +67,25 @@ def mongo_get_customer(date):
         return json.dumps(data, indent=2) 
     else:
         return "no app does not exist. Please enter a valid CPR"
+
+def mongo_get_apointment(date, tp_id):
+    data = []
+    for x in customer_collection.aggregate([{"$match": {"appointments.tattooparlor._id": tp_id}},
+            {"$unwind": '$appointments'},
+                {"$match": {"appointments.datetime": date}},
+                    {"$project": {
+                            "name": 1,
+                            "phonenumber": 1,
+                            "appointments.datetime": 1,
+                            "appointments.sessionlenght": 1,
+                            "appointments.artists._id": 1,
+                            "appointments.price": 1}}]):
+        data.append(x)
+    return json.dumps(data, indent=2)
+
+def mongodb_update_storage(tp_id, ink_id):
+    tattooparlor_collection.update_one({"_id": tp_id, "storage": {"$elemMatch": {"_id": ink_id}}}, {"$inc": {"storage.$.quantity": -1}}, upsert=True)
+    return "Storage updated!"
 
 def mongo_create_appointment(c_id, a_id, datetime, sessionlength, tattooparlorid, artistid):
     price = 0
@@ -104,10 +122,6 @@ def mongo_create_tattoo(a_id, t_id, desc, placement, ink_id):
         }
     }}}, upsert=True)
     return f"New tattoo created"
-
-def mongodb_update_storage(tp_id, ink_id):
-    tattooparlor_collection.update_one({"_id": tp_id, "storage": {"$elemMatch": {"_id": ink_id}}}, {"$inc": {"storage.$.quantity": -1}}, upsert=True)
-    return "Storage updated!"
 
 def monogodb_find_customer_on_ink(ink_id):
     data = []
