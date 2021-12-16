@@ -59,15 +59,6 @@ db = client['InkItUp']
 customer_collection = db["Customer"]
 tattooparlor_collection = db["Tattooparlor"]
 
-def mongo_get_customer(date, tp_id):
-    data = []
-    if customer_collection.count({"appointments.datetime":date}):
-        for x in customer_collection.find({"appointments.datetime":date}):
-            data.append(x)
-        return json.dumps(data, indent=2) 
-    else:
-        return "no app does not exist. Please enter a valid CPR"
-
 def mongo_get_apointment(date, tp_id):
     data = []
     for x in customer_collection.aggregate([{"$match": {"appointments.tattooparlor._id": tp_id}},
