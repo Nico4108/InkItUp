@@ -78,7 +78,7 @@ def mongodb_update_storage(tp_id, ink_id):
     tattooparlor_collection.update_one({"_id": tp_id, "storage": {"$elemMatch": {"_id": ink_id}}}, {"$inc": {"storage.$.quantity": -1}}, upsert=True)
     return "Storage updated!"
 
-def mongo_create_appointment(c_id, a_id, datetime, sessionlength, tattooparlorid, artistid):
+def mongo_create_appointment(c_id, a_id, date, time, sessionlength, tattooparlorid, artistid):
     price = 0
     cus_details = tattooparlor_collection.find({"artists._id": artistid})
     
@@ -89,7 +89,8 @@ def mongo_create_appointment(c_id, a_id, datetime, sessionlength, tattooparlorid
 
     customer_collection.update({"_id": c_id}, {"$addToSet": {"appointments": {
         "_id": a_id,
-        "datetime": datetime,
+        "date": date,
+        "time": time,
         "sessionLenght": sessionlength,
         "tattoparlor": {
             "_id": tattooparlorid

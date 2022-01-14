@@ -110,8 +110,8 @@ def show_appointment(request, date, tp_id):
     action = mongo_get_apointment(date, tp_id)
     return HttpResponse(action, content_type = "application/json")
 
-def create_appointment_existing_customer(request, new_c_id, new_a_id, new_datetime, new_sessionlength, new_tattooparlorid, new_artistid):
-    new_appointment = mongo_create_appointment(new_c_id, new_a_id, new_datetime, new_sessionlength, new_tattooparlorid, new_artistid)
+def create_appointment_existing_customer(request, new_c_id, new_a_id, new_date, new_time, new_sessionlength, new_tattooparlorid, new_artistid):
+    new_appointment = mongo_create_appointment(new_c_id, new_a_id, new_date, new_time, new_sessionlength, new_tattooparlorid, new_artistid)
     return HttpResponse(new_appointment, content_type = "application/json")
 
 def create_tattoo(request, new_a_id, new_t_id, new_desc, new_placement, new_ink_id):

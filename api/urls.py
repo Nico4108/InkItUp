@@ -33,7 +33,7 @@ urlpatterns = [
 
 #MONGODB
   path('mongo/show_appointment/<str:date>/<int:tp_id>/',views.show_appointment, name='show appointmens'),
-  path('mongo/createappoinmentec/<int:new_c_id>/<int:new_a_id>/<str:new_datetime>/<int:new_sessionlength>/<int:new_tattooparlorid>/<int:new_artistid>/',views.create_appointment_existing_customer, name='create appointment E C'),
+  path('mongo/createappoinmentec/<int:new_c_id>/<int:new_a_id>/<str:new_date>/<str:new_time>/<int:new_sessionlength>/<int:new_tattooparlorid>/<int:new_artistid>/',views.create_appointment_existing_customer, name='create appointment E C'),
   path('mongo/createtattoo/<int:new_a_id>/<int:new_t_id>/<str:new_desc>/<str:new_placement>/<int:new_ink_id>/', views.create_tattoo, name='create tattoo'),
   path('mongo/updatestorage/<int:new_tp_id>/<int:new_ink_id>/',views.update_ink, name='update storage'),
   path('mongo/findcustomer/<int:new_ink_id>/', views.find_customer_ink, name='find customer on ink')
